@@ -1,0 +1,13 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UE4Editor-OpenXRExpansionPlugin.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:\Users\firew\Documents\GitHub\VRMiniGun\Intermediate\Build\Win64\VRMiniGunEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionPlugin\Module.OpenXRExpansionPlugin.cpp.obj"
+"C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionPlugin\Module.OpenXRExpansionPlugin.gen.cpp.obj"
+"C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionPlugin\Default.rc2.res"
+/OUT:"C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionPlugin\UE4Editor-OpenXRExpansionPlugin.lib"
