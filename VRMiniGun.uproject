@@ -71,8 +71,6 @@
 		}
 	],
 	"TargetPlatforms": [
-		"Android",
-		"IOS",
 		"Linux",
 		"Mac",
 		"PS4",
