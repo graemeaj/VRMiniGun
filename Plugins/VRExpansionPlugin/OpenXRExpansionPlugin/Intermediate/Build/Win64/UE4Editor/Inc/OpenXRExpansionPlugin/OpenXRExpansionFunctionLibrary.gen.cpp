@@ -20,6 +20,7 @@ void EmptyLinkFunctionForGeneratedCodeOpenXRExpansionFunctionLibrary() {}
 	ENGINE_API UClass* Z_Construct_UClass_UBlueprintFunctionLibrary();
 	OPENXREXPANSIONPLUGIN_API UScriptStruct* Z_Construct_UScriptStruct_FBPOpenXRActionSkeletalData();
 	OPENXREXPANSIONPLUGIN_API UClass* Z_Construct_UClass_UOpenXRHandPoseComponent_NoRegister();
+	OPENXREXPANSIONPLUGIN_API UEnum* Z_Construct_UEnum_OpenXRExpansionPlugin_EBPXRResultSwitch();
 // End Cross Module References
 	static UEnum* EBPOpenXRControllerDeviceType_StaticEnum()
 	{
@@ -100,9 +101,10 @@ void EmptyLinkFunctionForGeneratedCodeOpenXRExpansionFunctionLibrary() {}
 	{
 		P_GET_PROPERTY_REF(FStrProperty,Z_Param_Out_TrackingSystemName);
 		P_GET_ENUM_REF(EBPOpenXRControllerDeviceType,Z_Param_Out_DeviceType);
+		P_GET_ENUM_REF(EBPXRResultSwitch,Z_Param_Out_Result);
 		P_FINISH;
 		P_NATIVE_BEGIN;
-		*(bool*)Z_Param__Result=UOpenXRExpansionFunctionLibrary::GetXRMotionControllerType(Z_Param_Out_TrackingSystemName,(EBPOpenXRControllerDeviceType&)(Z_Param_Out_DeviceType));
+		UOpenXRExpansionFunctionLibrary::GetXRMotionControllerType(Z_Param_Out_TrackingSystemName,(EBPOpenXRControllerDeviceType&)(Z_Param_Out_DeviceType),(EBPXRResultSwitch&)(Z_Param_Out_Result));
 		P_NATIVE_END;
 	}
 	DEFINE_FUNCTION(UOpenXRExpansionFunctionLibrary::execGetOpenXRHandPose)
@@ -195,13 +197,13 @@ void EmptyLinkFunctionForGeneratedCodeOpenXRExpansionFunctionLibrary() {}
 		{
 			FString TrackingSystemName;
 			EBPOpenXRControllerDeviceType DeviceType;
-			bool ReturnValue;
+			EBPXRResultSwitch Result;
 		};
 		static const UE4CodeGen_Private::FStrPropertyParams NewProp_TrackingSystemName;
 		static const UE4CodeGen_Private::FBytePropertyParams NewProp_DeviceType_Underlying;
 		static const UE4CodeGen_Private::FEnumPropertyParams NewProp_DeviceType;
-		static void NewProp_ReturnValue_SetBit(void* Obj);
-		static const UE4CodeGen_Private::FBoolPropertyParams NewProp_ReturnValue;
+		static const UE4CodeGen_Private::FBytePropertyParams NewProp_Result_Underlying;
+		static const UE4CodeGen_Private::FEnumPropertyParams NewProp_Result;
 		static const UE4CodeGen_Private::FPropertyParamsBase* const PropPointers[];
 #if WITH_METADATA
 		static const UE4CodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
@@ -211,27 +213,26 @@ void EmptyLinkFunctionForGeneratedCodeOpenXRExpansionFunctionLibrary() {}
 	const UE4CodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::NewProp_TrackingSystemName = { "TrackingSystemName", nullptr, (EPropertyFlags)0x0010000000000180, UE4CodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(OpenXRExpansionFunctionLibrary_eventGetXRMotionControllerType_Parms, TrackingSystemName), METADATA_PARAMS(nullptr, 0) };
 	const UE4CodeGen_Private::FBytePropertyParams Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::NewProp_DeviceType_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UE4CodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, nullptr, METADATA_PARAMS(nullptr, 0) };
 	const UE4CodeGen_Private::FEnumPropertyParams Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::NewProp_DeviceType = { "DeviceType", nullptr, (EPropertyFlags)0x0010000000000180, UE4CodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(OpenXRExpansionFunctionLibrary_eventGetXRMotionControllerType_Parms, DeviceType), Z_Construct_UEnum_OpenXRExpansionPlugin_EBPOpenXRControllerDeviceType, METADATA_PARAMS(nullptr, 0) };
-	void Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::NewProp_ReturnValue_SetBit(void* Obj)
-	{
-		((OpenXRExpansionFunctionLibrary_eventGetXRMotionControllerType_Parms*)Obj)->ReturnValue = 1;
-	}
-	const UE4CodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UE4CodeGen_Private::EPropertyGenFlags::Bool | UE4CodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(OpenXRExpansionFunctionLibrary_eventGetXRMotionControllerType_Parms), &Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::NewProp_ReturnValue_SetBit, METADATA_PARAMS(nullptr, 0) };
+	const UE4CodeGen_Private::FBytePropertyParams Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::NewProp_Result_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UE4CodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, nullptr, METADATA_PARAMS(nullptr, 0) };
+	const UE4CodeGen_Private::FEnumPropertyParams Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::NewProp_Result = { "Result", nullptr, (EPropertyFlags)0x0010000000000180, UE4CodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(OpenXRExpansionFunctionLibrary_eventGetXRMotionControllerType_Parms, Result), Z_Construct_UEnum_OpenXRExpansionPlugin_EBPXRResultSwitch, METADATA_PARAMS(nullptr, 0) };
 	const UE4CodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::PropPointers[] = {
 		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::NewProp_TrackingSystemName,
 		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::NewProp_DeviceType_Underlying,
 		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::NewProp_DeviceType,
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::NewProp_ReturnValue,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::NewProp_Result_Underlying,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::NewProp_Result,
 	};
 #if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::Function_MetaDataParams[] = {
 		{ "bIgnoreSelf", "true" },
 		{ "Category", "VRExpansionFunctions|OpenXR" },
-		{ "Comment", "// Get a list of all currently tracked devices and their types, index in the array is their device index\n" },
+		{ "Comment", "// Get a list of all currently tracked devices and their types, index in the array is their device index\n// Returns failed if the openXR query failed (no interaction profile yet or openXR is not running)\n" },
+		{ "ExpandEnumAsExecs", "Result" },
 		{ "ModuleRelativePath", "Public/OpenXRExpansionFunctionLibrary.h" },
-		{ "ToolTip", "Get a list of all currently tracked devices and their types, index in the array is their device index" },
+		{ "ToolTip", "Get a list of all currently tracked devices and their types, index in the array is their device index\nReturns failed if the openXR query failed (no interaction profile yet or openXR is not running)" },
 	};
 #endif
-	const UE4CodeGen_Private::FFunctionParams Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UOpenXRExpansionFunctionLibrary, nullptr, "GetXRMotionControllerType", nullptr, nullptr, sizeof(OpenXRExpansionFunctionLibrary_eventGetXRMotionControllerType_Parms), Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x14422401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::Function_MetaDataParams)) };
+	const UE4CodeGen_Private::FFunctionParams Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UOpenXRExpansionFunctionLibrary, nullptr, "GetXRMotionControllerType", nullptr, nullptr, sizeof(OpenXRExpansionFunctionLibrary_eventGetXRMotionControllerType_Parms), Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04422401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType_Statics::Function_MetaDataParams)) };
 	UFunction* Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType()
 	{
 		static UFunction* ReturnFunction = nullptr;
@@ -261,7 +262,7 @@ void EmptyLinkFunctionForGeneratedCodeOpenXRExpansionFunctionLibrary() {}
 	};
 	const FClassFunctionLinkInfo Z_Construct_UClass_UOpenXRExpansionFunctionLibrary_Statics::FuncInfo[] = {
 		{ &Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetOpenXRHandPose, "GetOpenXRHandPose" }, // 1681755815
-		{ &Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType, "GetXRMotionControllerType" }, // 3020649654
+		{ &Z_Construct_UFunction_UOpenXRExpansionFunctionLibrary_GetXRMotionControllerType, "GetXRMotionControllerType" }, // 1521608170
 	};
 #if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UOpenXRExpansionFunctionLibrary_Statics::Class_MetaDataParams[] = {
@@ -300,7 +301,7 @@ void EmptyLinkFunctionForGeneratedCodeOpenXRExpansionFunctionLibrary() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UOpenXRExpansionFunctionLibrary, 2266595640);
+	IMPLEMENT_CLASS(UOpenXRExpansionFunctionLibrary, 2917393493);
 	template<> OPENXREXPANSIONPLUGIN_API UClass* StaticClass<UOpenXRExpansionFunctionLibrary>()
 	{
 		return UOpenXRExpansionFunctionLibrary::StaticClass();

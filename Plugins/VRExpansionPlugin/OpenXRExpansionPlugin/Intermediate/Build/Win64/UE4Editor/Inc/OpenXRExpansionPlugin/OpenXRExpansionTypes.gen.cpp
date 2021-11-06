@@ -17,6 +17,7 @@ void EmptyLinkFunctionForGeneratedCodeOpenXRExpansionTypes() {}
 	UPackage* Z_Construct_UPackage__Script_OpenXRExpansionPlugin();
 	OPENXREXPANSIONPLUGIN_API UEnum* Z_Construct_UEnum_OpenXRExpansionPlugin_EXRHandJointType();
 	OPENXREXPANSIONPLUGIN_API UEnum* Z_Construct_UEnum_OpenXRExpansionPlugin_EVRSkeletalHandIndex();
+	OPENXREXPANSIONPLUGIN_API UEnum* Z_Construct_UEnum_OpenXRExpansionPlugin_EBPXRResultSwitch();
 	OPENXREXPANSIONPLUGIN_API UScriptStruct* Z_Construct_UScriptStruct_FBPOpenXRSkeletalMappingData();
 	OPENXREXPANSIONPLUGIN_API UScriptStruct* Z_Construct_UScriptStruct_FBPOpenXRSkeletalPair();
 	OPENXREXPANSIONPLUGIN_API UScriptStruct* Z_Construct_UScriptStruct_FBPOpenXRActionSkeletalData();
@@ -228,6 +229,65 @@ void EmptyLinkFunctionForGeneratedCodeOpenXRExpansionTypes() {}
 				nullptr,
 				"EVRSkeletalHandIndex",
 				"EVRSkeletalHandIndex",
+				Enumerators,
+				UE_ARRAY_COUNT(Enumerators),
+				RF_Public|RF_Transient|RF_MarkAsNative,
+				EEnumFlags::None,
+				UE4CodeGen_Private::EDynamicType::NotDynamic,
+				(uint8)UEnum::ECppForm::EnumClass,
+				METADATA_PARAMS(Enum_MetaDataParams, UE_ARRAY_COUNT(Enum_MetaDataParams))
+			};
+			UE4CodeGen_Private::ConstructUEnum(ReturnEnum, EnumParams);
+		}
+		return ReturnEnum;
+	}
+	static UEnum* EBPXRResultSwitch_StaticEnum()
+	{
+		static UEnum* Singleton = nullptr;
+		if (!Singleton)
+		{
+			Singleton = GetStaticEnum(Z_Construct_UEnum_OpenXRExpansionPlugin_EBPXRResultSwitch, Z_Construct_UPackage__Script_OpenXRExpansionPlugin(), TEXT("EBPXRResultSwitch"));
+		}
+		return Singleton;
+	}
+	template<> OPENXREXPANSIONPLUGIN_API UEnum* StaticEnum<EBPXRResultSwitch>()
+	{
+		return EBPXRResultSwitch_StaticEnum();
+	}
+	static FCompiledInDeferEnum Z_CompiledInDeferEnum_UEnum_EBPXRResultSwitch(EBPXRResultSwitch_StaticEnum, TEXT("/Script/OpenXRExpansionPlugin"), TEXT("EBPXRResultSwitch"), false, nullptr, nullptr);
+	uint32 Get_Z_Construct_UEnum_OpenXRExpansionPlugin_EBPXRResultSwitch_Hash() { return 2426416756U; }
+	UEnum* Z_Construct_UEnum_OpenXRExpansionPlugin_EBPXRResultSwitch()
+	{
+#if WITH_HOT_RELOAD
+		UPackage* Outer = Z_Construct_UPackage__Script_OpenXRExpansionPlugin();
+		static UEnum* ReturnEnum = FindExistingEnumIfHotReloadOrDynamic(Outer, TEXT("EBPXRResultSwitch"), 0, Get_Z_Construct_UEnum_OpenXRExpansionPlugin_EBPXRResultSwitch_Hash(), false);
+#else
+		static UEnum* ReturnEnum = nullptr;
+#endif // WITH_HOT_RELOAD
+		if (!ReturnEnum)
+		{
+			static const UE4CodeGen_Private::FEnumeratorParam Enumerators[] = {
+				{ "EBPXRResultSwitch::OnSucceeded", (int64)EBPXRResultSwitch::OnSucceeded },
+				{ "EBPXRResultSwitch::OnFailed", (int64)EBPXRResultSwitch::OnFailed },
+			};
+#if WITH_METADATA
+			const UE4CodeGen_Private::FMetaDataPairParam Enum_MetaDataParams[] = {
+				{ "Comment", "// This makes a lot of the blueprint functions cleaner\n" },
+				{ "ModuleRelativePath", "Public/OpenXRExpansionTypes.h" },
+				{ "OnFailed.Comment", "// On Failure\n" },
+				{ "OnFailed.Name", "EBPXRResultSwitch::OnFailed" },
+				{ "OnFailed.ToolTip", "On Failure" },
+				{ "OnSucceeded.Comment", "// On Success\n" },
+				{ "OnSucceeded.Name", "EBPXRResultSwitch::OnSucceeded" },
+				{ "OnSucceeded.ToolTip", "On Success" },
+				{ "ToolTip", "This makes a lot of the blueprint functions cleaner" },
+			};
+#endif
+			static const UE4CodeGen_Private::FEnumParams EnumParams = {
+				(UObject*(*)())Z_Construct_UPackage__Script_OpenXRExpansionPlugin,
+				nullptr,
+				"EBPXRResultSwitch",
+				"EBPXRResultSwitch",
 				Enumerators,
 				UE_ARRAY_COUNT(Enumerators),
 				RF_Public|RF_Transient|RF_MarkAsNative,

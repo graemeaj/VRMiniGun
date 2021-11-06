@@ -6,8 +6,8 @@
 /NAME:"UE4Editor-OpenXRExpansionEditor.dll"
 /IGNORE:4221
 /NODEFAULTLIB
-"C:\Users\firew\Documents\GitHub\VRMiniGun\Intermediate\Build\Win64\VRMiniGunEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h.obj"
-"C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionEditor\Module.OpenXRExpansionEditor.cpp.obj"
-"C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionEditor\Module.OpenXRExpansionEditor.gen.cpp.obj"
-"C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionEditor\Default.rc2.res"
-/OUT:"C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionEditor\UE4Editor-OpenXRExpansionEditor.lib"
+"C:\Users\firew\Downloads\VRExpPluginExample-master\Intermediate\Build\Win64\VRExpPluginExampleEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h.obj"
+"C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionEditor\Module.OpenXRExpansionEditor.cpp.obj"
+"C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionEditor\Module.OpenXRExpansionEditor.gen.cpp.obj"
+"C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionEditor\Default.rc2.res"
+/OUT:"C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionEditor\UE4Editor-OpenXRExpansionEditor.lib"

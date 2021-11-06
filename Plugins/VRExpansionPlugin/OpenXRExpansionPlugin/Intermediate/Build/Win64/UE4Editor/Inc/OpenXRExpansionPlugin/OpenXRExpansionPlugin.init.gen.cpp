@@ -27,8 +27,8 @@ void EmptyLinkFunctionForGeneratedCodeOpenXRExpansionPlugin_init() {}
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0xE3824A33,
-				0xE084C62A,
+				0x90B7411E,
+				0x11DEB5C3,
 				METADATA_PARAMS(nullptr, 0)
 			};
 			UE4CodeGen_Private::ConstructUPackage(ReturnPackage, PackageParams);

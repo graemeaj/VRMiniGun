@@ -49,8 +49,8 @@
 #define NDEBUG 1
 #define UE_BUILD_DEVELOPMENT 1
 #define UE_IS_ENGINE_MODULE 0
-#define UE_PROJECT_NAME VRMiniGun
-#define UE_TARGET_NAME VRMiniGunEditor
+#define UE_PROJECT_NAME VRExpPluginExample
+#define UE_TARGET_NAME VRExpPluginExampleEditor
 #define UE_MODULE_NAME "OpenXRExpansionPlugin"
 #define UE_PLUGIN_NAME "OpenXRExpansionPlugin"
 #define IMPLEMENT_ENCRYPTION_KEY_REGISTRATION() 

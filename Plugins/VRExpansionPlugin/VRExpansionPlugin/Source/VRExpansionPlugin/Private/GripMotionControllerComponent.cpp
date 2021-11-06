@@ -21,6 +21,7 @@
 #include "VRBaseCharacter.h"
 
 #include "GripScripts/GS_Default.h"
+#include "GripScripts/GS_LerpToHand.h"
 
 #include "PhysicsPublic.h"
 #include "PhysicsEngine/BodySetup.h"
@@ -35,6 +36,8 @@
 #include "Chaos/PBDJointConstraintTypes.h"
 #include "Chaos/PBDJointConstraintData.h"
 #include "Chaos/Sphere.h"
+#include "PhysicsProxy/SingleParticlePhysicsProxy.h"
+#include "Chaos/ChaosConstraintSettings.h"
 #endif
 
 #include "Features/IModularFeatures.h"
@@ -104,7 +107,7 @@ UGripMotionControllerComponent::UGripMotionControllerComponent(const FObjectInit
 
 	bSmoothHandTracking = false;
 	bWasSmoothingHand = false;
-	bSmoothWithEuroLowPassFunction = false;
+	bSmoothWithEuroLowPassFunction = true;
 	LastSmoothRelativeTransform = FTransform::Identity;
 	SmoothingSpeed = 20.0f;
 	EuroSmoothingParams.MinCutoff = 0.1f;
@@ -1125,7 +1128,7 @@ bool UGripMotionControllerComponent::GripObjectByInterface(UObject * ObjectToGri
 			float Damping;
 			IVRGripInterface::Execute_GetGripStiffnessAndDamping(Owner, Stiffness, Damping);
 
-			return GripComponent(PrimComp, WorldOffset, bWorldOffsetIsRelative, OptionalSnapToSocketName,
+			return GripActor(Owner, WorldOffset, bWorldOffsetIsRelative, OptionalSnapToSocketName,
 				OptionalBoneToGripName,
 				CollisionType,
 				IVRGripInterface::Execute_GripLateUpdateSetting(Owner),
@@ -1133,7 +1136,16 @@ bool UGripMotionControllerComponent::GripObjectByInterface(UObject * ObjectToGri
 				Stiffness,
 				Damping,
 				bIsSlotGrip
-				);
+			);
+			/*return GripComponent(PrimComp, WorldOffset, bWorldOffsetIsRelative, OptionalSnapToSocketName,
+				OptionalBoneToGripName,
+				CollisionType,
+				IVRGripInterface::Execute_GripLateUpdateSetting(Owner),
+				IVRGripInterface::Execute_GripMovementReplicationType(Owner),
+				Stiffness,
+				Damping,
+				bIsSlotGrip
+				);*/
 		}
 		else
 		{
@@ -1157,7 +1169,7 @@ bool UGripMotionControllerComponent::GripObjectByInterface(UObject * ObjectToGri
 			float Damping;
 			IVRGripInterface::Execute_GetGripStiffnessAndDamping(root, Stiffness, Damping);
 
-			return GripActor(Actor, WorldOffset, bWorldOffsetIsRelative, OptionalSnapToSocketName,
+			return GripComponent(root, WorldOffset, bWorldOffsetIsRelative, OptionalSnapToSocketName,
 				OptionalBoneToGripName,
 				CollisionType,
 				IVRGripInterface::Execute_GripLateUpdateSetting(root),
@@ -1166,6 +1178,15 @@ bool UGripMotionControllerComponent::GripObjectByInterface(UObject * ObjectToGri
 				Damping,
 				bIsSlotGrip
 				);
+			/*return GripActor(Actor, WorldOffset, bWorldOffsetIsRelative, OptionalSnapToSocketName,
+				OptionalBoneToGripName,
+				CollisionType,
+				IVRGripInterface::Execute_GripLateUpdateSetting(root),
+				IVRGripInterface::Execute_GripMovementReplicationType(root),
+				Stiffness,
+				Damping,
+				bIsSlotGrip
+				);*/
 		}
 		else if (Actor->GetClass()->ImplementsInterface(UVRGripInterface::StaticClass()))
 		{
@@ -2310,7 +2331,12 @@ void UGripMotionControllerComponent::DropAndSocket_Implementation(const FBPActor
 					}
 				}
 
-				IVRGripInterface::Execute_OnGripRelease(pActor, this, NewDrop, true);
+				if (IVRGripInterface* GripInterface = Cast<IVRGripInterface>(pActor))
+				{
+					GripInterface->Execute_OnGripRelease(pActor, this, NewDrop, true);
+					GripInterface->Native_NotifyThrowGripDelegates(this, false, NewDrop, true);
+				}
+				//IVRGripInterface::Execute_OnGripRelease(pActor, this, NewDrop, true);
 			}
 		}
 	}break;
@@ -2372,7 +2398,12 @@ void UGripMotionControllerComponent::DropAndSocket_Implementation(const FBPActor
 					}
 				}
 
-				IVRGripInterface::Execute_OnGripRelease(root, this, NewDrop, true);
+				if (IVRGripInterface* GripInterface = Cast<IVRGripInterface>(root))
+				{
+					GripInterface->Execute_OnGripRelease(root, this, NewDrop, true);
+					GripInterface->Native_NotifyThrowGripDelegates(this, false, NewDrop, true);
+				}
+				//IVRGripInterface::Execute_OnGripRelease(root, this, NewDrop, true);
 			}
 
 			// Call on child grip release on attached parent component
@@ -2491,7 +2522,19 @@ bool UGripMotionControllerComponent::NotifyGrip(FBPActorGripInformation &NewGrip
 				}
 
 				uint8 GripID = NewGrip.GripID;
-				IVRGripInterface::Execute_OnGrip(pActor, this, NewGrip);
+				//IVRGripInterface::Execute_OnGrip(pActor, this, NewGrip);
+				if (IVRGripInterface* GripInterface = Cast<IVRGripInterface>(pActor))
+				{
+					GripInterface->Execute_OnGrip(pActor, this, NewGrip);
+
+					if (!LocallyGrippedObjects.Contains(GripID) && !GrippedObjects.Contains(GripID))
+					{
+						return false;
+					}
+
+					GripInterface->Native_NotifyThrowGripDelegates(this, true, NewGrip, false);
+				}
+
 				if (!LocallyGrippedObjects.Contains(GripID) && !GrippedObjects.Contains(GripID))
 				{
 					return false;
@@ -2563,7 +2606,20 @@ bool UGripMotionControllerComponent::NotifyGrip(FBPActorGripInformation &NewGrip
 				}
 				
 				uint8 GripID = NewGrip.GripID;
-				IVRGripInterface::Execute_OnGrip(root, this, NewGrip);
+				//IVRGripInterface::Execute_OnGrip(root, this, NewGrip);
+
+				if (IVRGripInterface* GripInterface = Cast<IVRGripInterface>(root))
+				{
+					GripInterface->Execute_OnGrip(root, this, NewGrip);
+
+					if (!LocallyGrippedObjects.Contains(GripID) && !GrippedObjects.Contains(GripID))
+					{
+						return false;
+					}
+
+					GripInterface->Native_NotifyThrowGripDelegates(this, true, NewGrip, false);
+				}
+
 				if (!LocallyGrippedObjects.Contains(GripID) && !GrippedObjects.Contains(GripID))
 				{
 					return false;
@@ -2784,6 +2840,14 @@ void UGripMotionControllerComponent::InitializeLerpToHand(FBPActorGripInformatio
 	if (!VRSettings.bUseGlobalLerpToHand || VRSettings.LerpDuration <= 0.f)
 		return;
 
+	EBPVRResultSwitch Result;
+	TSubclassOf<class UVRGripScriptBase> Class = UGS_LerpToHand::StaticClass();
+	UVRGripScriptBase::GetGripScriptByClass(GripInformation.GrippedObject, Class, Result);
+	if (Result == EBPVRResultSwitch::OnSucceeded)
+	{
+		return;
+	}
+
 	if (USceneComponent* PrimParent = Cast<USceneComponent>(GripInformation.GrippedObject))
 	{
 		if (GripInformation.GrippedBoneName != NAME_None)
@@ -2837,12 +2901,20 @@ void UGripMotionControllerComponent::InitializeLerpToHand(FBPActorGripInformatio
 
 void UGripMotionControllerComponent::HandleGlobalLerpToHand(FBPActorGripInformation& GripInformation, FTransform& WorldTransform, float DeltaTime)
 {
-	if (!GripInformation.bIsLerping)
-		return;
-
 	UVRGlobalSettings* VRSettings = GetMutableDefault<UVRGlobalSettings>();
 
-	if (!VRSettings->bUseGlobalLerpToHand || VRSettings->LerpDuration <= 0.f)
+	if (!VRSettings->bUseGlobalLerpToHand || !GripInformation.bIsLerping)
+		return;
+
+	EBPVRResultSwitch Result;
+	TSubclassOf<class UVRGripScriptBase> Class = UGS_LerpToHand::StaticClass();
+	UVRGripScriptBase * LerpScript = UVRGripScriptBase::GetGripScriptByClass(GripInformation.GrippedObject, Class, Result);
+	if (Result == EBPVRResultSwitch::OnSucceeded && LerpScript && LerpScript->IsScriptActive())
+	{
+		return;
+	}
+
+	if (VRSettings->LerpDuration <= 0.f)
 	{
 		GripInformation.bIsLerping = false;
 		GripInformation.CurrentLerpTime = 0.f;
@@ -3137,7 +3209,12 @@ void UGripMotionControllerComponent::Drop_Implementation(const FBPActorGripInfor
 					}
 				}
 
-				IVRGripInterface::Execute_OnGripRelease(pActor, this, NewDrop, false);
+				if (IVRGripInterface* GripInterface = Cast<IVRGripInterface>(pActor))
+				{
+					GripInterface->Execute_OnGripRelease(pActor, this, NewDrop, false);
+					GripInterface->Native_NotifyThrowGripDelegates(this, false, NewDrop, false);
+				}
+				//IVRGripInterface::Execute_OnGripRelease(pActor, this, NewDrop, false);
 			}
 		}
 	}break;
@@ -3254,7 +3331,12 @@ void UGripMotionControllerComponent::Drop_Implementation(const FBPActorGripInfor
 					}
 				}
 
-				IVRGripInterface::Execute_OnGripRelease(root, this, NewDrop, false);
+				if (IVRGripInterface* GripInterface = Cast<IVRGripInterface>(root))
+				{
+					GripInterface->Execute_OnGripRelease(root, this, NewDrop, false);
+					GripInterface->Native_NotifyThrowGripDelegates(this, false, NewDrop, false);
+				}
+				//IVRGripInterface::Execute_OnGripRelease(root, this, NewDrop, false);
 			}
 
 			// Call on child grip release on attached parent component
@@ -4042,8 +4124,8 @@ bool UGripMotionControllerComponent::TeleportMoveGrip_Impl(FBPActorGripInformati
 #elif WITH_CHAOS
 			FPhysicsCommand::ExecuteWrite(ActorHandle, [&](const FPhysicsActorHandle& Actor)
 				{
-					Actor->SetX(newTrans.GetTranslation());
-					Actor->SetR(newTrans.GetRotation());
+					Actor->GetGameThreadAPI().SetX(newTrans.GetTranslation());
+					Actor->GetGameThreadAPI().SetR(newTrans.GetRotation());
 					FPhysicsInterface::SetGlobalPose_AssumesLocked(Actor, newTrans);
 				});
 #endif
@@ -5467,8 +5549,8 @@ bool UGripMotionControllerComponent::SetUpPhysicsHandle(const FBPActorGripInform
 			using namespace Chaos;
 			// Missing from physx, not sure how it is working for them currently.
 			//TArray<FPhysicsActorHandle> ActorHandles;
-			HandleInfo->KinActorData2->SetGeometry(TUniquePtr<FImplicitObject>(new TSphere<FReal, 3>(TVector<FReal, 3>(0.f), 1000.f)));
-			HandleInfo->KinActorData2->SetObjectState(EObjectStateType::Kinematic);
+			HandleInfo->KinActorData2->GetGameThreadAPI().SetGeometry(TUniquePtr<FImplicitObject>(new TSphere<FReal, 3>(TVector<FReal, 3>(0.f), 1000.f)));
+			HandleInfo->KinActorData2->GetGameThreadAPI().SetObjectState(EObjectStateType::Kinematic);
 			FPhysicsInterface::AddActorToSolver(HandleInfo->KinActorData2, ActorParams.Scene->GetSolver());
 			//ActorHandles.Add(HandleInfo->KinActorData2);
 			//ActorParams.Scene->AddActorsToScene_AssumesLocked(ActorHandles);
@@ -5580,6 +5662,15 @@ bool UGripMotionControllerComponent::SetUpPhysicsHandle(const FBPActorGripInform
 				AngularDamping = Damping * ANGULAR_DAMPING_MULTIPLIER; // Default multiplier
 			}
 			
+#if WITH_CHAOS
+			const UVRGlobalSettings& VRSettings = *GetDefault<UVRGlobalSettings>();
+
+			Stiffness *= VRSettings.LinearDriveStiffnessScale;
+			Damping *= VRSettings.LinearDriveDampingScale;
+			AngularStiffness *= VRSettings.AngularDriveStiffnessScale;
+			AngularDamping *= VRSettings.AngularDriveDampingScale;
+#endif
+
 			AngularMaxForce = (float)FMath::Clamp<double>((double)AngularStiffness * (double)NewGrip.AdvancedGripSettings.PhysicsSettings.AngularMaxForceCoefficient, 0, (double)MAX_FLT);
 			MaxForce = (float)FMath::Clamp<double>((double)Stiffness * (double)NewGrip.AdvancedGripSettings.PhysicsSettings.LinearMaxForceCoefficient, 0, (double)MAX_FLT);
 
@@ -5727,6 +5818,18 @@ bool UGripMotionControllerComponent::SetUpPhysicsHandle(const FBPActorGripInform
 					HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eSLERP, driveVal);
 				}
 			}
+#elif WITH_CHAOS
+			if (bUseForceDrive && HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.Constraint)
+			{
+				if (HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.Constraint->IsType(Chaos::EConstraintType::JointConstraintType))
+				{
+					if (Chaos::FJointConstraint* Constraint = static_cast<Chaos::FJointConstraint*>(HandleInfo->HandleData2.Constraint))
+					{
+						Constraint->SetLinearDriveForceMode(Chaos::EJointForceMode::Force);
+						Constraint->SetAngularDriveForceMode(Chaos::EJointForceMode::Force);
+					}
+				}
+			}
 #endif
 		}
 	});
@@ -5740,159 +5843,205 @@ bool UGripMotionControllerComponent::SetUpPhysicsHandle(const FBPActorGripInform
 	return true;
 }
 
-bool UGripMotionControllerComponent::SetGripConstraintStiffnessAndDamping(const FBPActorGripInformation *Grip, bool bUseHybridMultiplier)
+bool UGripMotionControllerComponent::SetGripConstraintStiffnessAndDamping(const FBPActorGripInformation* Grip, bool bUseHybridMultiplier)
 {
 	if (!Grip)
 		return false;
 
-	FBPActorPhysicsHandleInformation * HandleInfo = GetPhysicsGrip(*Grip);
+	FBPActorPhysicsHandleInformation* HandleInfo = GetPhysicsGrip(*Grip);
 
 	if (HandleInfo)
 	{
 		if (HandleInfo->HandleData2.IsValid())
 		{
-
-			bool bUseForceDrive = (Grip->AdvancedGripSettings.PhysicsSettings.bUsePhysicsSettings && Grip->AdvancedGripSettings.PhysicsSettings.PhysicsConstraintType == EPhysicsGripConstraintType::ForceConstraint);
-
-			float Stiffness = Grip->Stiffness;
-			float Damping = Grip->Damping;
-			float MaxForce;
-			float AngularStiffness;
-			float AngularDamping;
-			float AngularMaxForce;
-
-			if (Grip->AdvancedGripSettings.PhysicsSettings.bUsePhysicsSettings && Grip->AdvancedGripSettings.PhysicsSettings.bUseCustomAngularValues)
-			{
-				AngularStiffness = Grip->AdvancedGripSettings.PhysicsSettings.AngularStiffness;
-				AngularDamping = Grip->AdvancedGripSettings.PhysicsSettings.AngularDamping;
-			}
-			else
-			{
-				AngularStiffness = Stiffness * ANGULAR_STIFFNESS_MULTIPLIER; // Default multiplier
-				AngularDamping = Damping * ANGULAR_DAMPING_MULTIPLIER; // Default multiplier
-			}
-
-			AngularMaxForce = (float)FMath::Clamp<double>((double)AngularStiffness * (double)Grip->AdvancedGripSettings.PhysicsSettings.AngularMaxForceCoefficient, 0, (double)MAX_FLT);
-			MaxForce = (float)FMath::Clamp<double>((double)Stiffness * (double)Grip->AdvancedGripSettings.PhysicsSettings.LinearMaxForceCoefficient, 0, (double)MAX_FLT);
-
-
-			// Different settings for manip grip
-			if (Grip->GripCollisionType == EGripCollisionType::ManipulationGrip || Grip->GripCollisionType == EGripCollisionType::ManipulationGripWithWristTwist)
-			{
-				HandleInfo->LinConstraint.XDrive.Damping = Damping;
-				HandleInfo->LinConstraint.XDrive.Stiffness = Stiffness;
-				HandleInfo->LinConstraint.XDrive.MaxForce = MaxForce;
-				HandleInfo->LinConstraint.YDrive.Damping = Damping;
-				HandleInfo->LinConstraint.YDrive.Stiffness = Stiffness;
-				HandleInfo->LinConstraint.YDrive.MaxForce = MaxForce;
-				HandleInfo->LinConstraint.ZDrive.Damping = Damping;
-				HandleInfo->LinConstraint.ZDrive.Stiffness = Stiffness;
-				HandleInfo->LinConstraint.ZDrive.MaxForce = MaxForce;
-
-				FPhysicsInterface::UpdateLinearDrive_AssumesLocked(HandleInfo->HandleData2, HandleInfo->LinConstraint);
-#if PHYSICS_INTERFACE_PHYSX
-				if (bUseForceDrive && HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.ConstraintData)
+			FPhysicsInterface::ExecuteOnUnbrokenConstraintReadWrite(HandleInfo->HandleData2, [&](const FPhysicsConstraintHandle& InUnbrokenConstraint)
 				{
-					PxD6JointDrive driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eX);
-					driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
-					HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eX, driveVal);
+					bool bUseForceDrive = (Grip->AdvancedGripSettings.PhysicsSettings.bUsePhysicsSettings && Grip->AdvancedGripSettings.PhysicsSettings.PhysicsConstraintType == EPhysicsGripConstraintType::ForceConstraint);
 
-					driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eY);
-					driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
-					HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eY, driveVal);
+					float Stiffness = Grip->Stiffness;
+					float Damping = Grip->Damping;
+					float MaxForce;
+					float AngularStiffness;
+					float AngularDamping;
+					float AngularMaxForce;
 
-					driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eZ);
-					driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
-					HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eZ, driveVal);
-				}
-#endif
-
-				if (Grip->GripCollisionType == EGripCollisionType::ManipulationGripWithWristTwist)
-				{
-					HandleInfo->AngConstraint.TwistDrive.Damping = AngularDamping;
-					HandleInfo->AngConstraint.TwistDrive.Stiffness = AngularStiffness;
-					HandleInfo->AngConstraint.TwistDrive.MaxForce = AngularMaxForce;
-
-					FPhysicsInterface::UpdateAngularDrive_AssumesLocked(HandleInfo->HandleData2, HandleInfo->AngConstraint);
-
-#if PHYSICS_INTERFACE_PHYSX
-					if (bUseForceDrive && HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.ConstraintData)
+					if (Grip->AdvancedGripSettings.PhysicsSettings.bUsePhysicsSettings && Grip->AdvancedGripSettings.PhysicsSettings.bUseCustomAngularValues)
 					{
-						PxD6JointDrive driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eTWIST);
-						driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
-						HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eTWIST, driveVal);
+						AngularStiffness = Grip->AdvancedGripSettings.PhysicsSettings.AngularStiffness;
+						AngularDamping = Grip->AdvancedGripSettings.PhysicsSettings.AngularDamping;
 					}
-#endif
-				}
+					else
+					{
+						AngularStiffness = Stiffness * ANGULAR_STIFFNESS_MULTIPLIER; // Default multiplier
+						AngularDamping = Damping * ANGULAR_DAMPING_MULTIPLIER; // Default multiplier
+					}
 
-				FPhysicsInterface::SetDrivePosition(HandleInfo->HandleData2, FVector::ZeroVector);
-				FPhysicsInterface::SetDriveOrientation(HandleInfo->HandleData2, FQuat::Identity);
-			}
-			else
-			{
-				if (Grip->GripCollisionType == EGripCollisionType::InteractiveHybridCollisionWithPhysics)
-				{
-					// Do not effect damping, just increase stiffness so that it is stronger
-					// Default multiplier
-					Stiffness *= HYBRID_PHYSICS_GRIP_MULTIPLIER;
-					AngularStiffness *= HYBRID_PHYSICS_GRIP_MULTIPLIER;
+#if WITH_CHAOS
+					const UVRGlobalSettings& VRSettings = *GetDefault<UVRGlobalSettings>();
+
+					Stiffness *= VRSettings.LinearDriveStiffnessScale;
+					Damping *= VRSettings.LinearDriveDampingScale;
+					AngularStiffness *= VRSettings.AngularDriveStiffnessScale;
+					AngularDamping *= VRSettings.AngularDriveDampingScale;
+#endif
 
 					AngularMaxForce = (float)FMath::Clamp<double>((double)AngularStiffness * (double)Grip->AdvancedGripSettings.PhysicsSettings.AngularMaxForceCoefficient, 0, (double)MAX_FLT);
 					MaxForce = (float)FMath::Clamp<double>((double)Stiffness * (double)Grip->AdvancedGripSettings.PhysicsSettings.LinearMaxForceCoefficient, 0, (double)MAX_FLT);
-				}
 
-				HandleInfo->LinConstraint.XDrive.Damping = Damping;
-				HandleInfo->LinConstraint.XDrive.Stiffness = Stiffness;
-				HandleInfo->LinConstraint.XDrive.MaxForce = MaxForce;
-				HandleInfo->LinConstraint.YDrive.Damping = Damping;
-				HandleInfo->LinConstraint.YDrive.Stiffness = Stiffness;
-				HandleInfo->LinConstraint.YDrive.MaxForce = MaxForce;
-				HandleInfo->LinConstraint.ZDrive.Damping = Damping;
-				HandleInfo->LinConstraint.ZDrive.Stiffness = Stiffness;
-				HandleInfo->LinConstraint.ZDrive.MaxForce = MaxForce;
 
-				FPhysicsInterface::UpdateLinearDrive_AssumesLocked(HandleInfo->HandleData2, HandleInfo->LinConstraint);
+					// Different settings for manip grip
+					if (Grip->GripCollisionType == EGripCollisionType::ManipulationGrip || Grip->GripCollisionType == EGripCollisionType::ManipulationGripWithWristTwist)
+					{
+						HandleInfo->LinConstraint.XDrive.Damping = Damping;
+						HandleInfo->LinConstraint.XDrive.Stiffness = Stiffness;
+						HandleInfo->LinConstraint.XDrive.MaxForce = MaxForce;
+						HandleInfo->LinConstraint.YDrive.Damping = Damping;
+						HandleInfo->LinConstraint.YDrive.Stiffness = Stiffness;
+						HandleInfo->LinConstraint.YDrive.MaxForce = MaxForce;
+						HandleInfo->LinConstraint.ZDrive.Damping = Damping;
+						HandleInfo->LinConstraint.ZDrive.Stiffness = Stiffness;
+						HandleInfo->LinConstraint.ZDrive.MaxForce = MaxForce;
+
+						FPhysicsInterface::UpdateLinearDrive_AssumesLocked(HandleInfo->HandleData2, HandleInfo->LinConstraint);
+#if PHYSICS_INTERFACE_PHYSX
+						if (bUseForceDrive && HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.ConstraintData)
+						{
+							PxD6JointDrive driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eX);
+							driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
+							HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eX, driveVal);
+
+							driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eY);
+							driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
+							HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eY, driveVal);
+
+							driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eZ);
+							driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
+							HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eZ, driveVal);
+						}
+#elif WITH_CHAOS
+						if (bUseForceDrive && HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.Constraint)
+						{
+							if (HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.Constraint->IsType(Chaos::EConstraintType::JointConstraintType))
+							{
+								if (Chaos::FJointConstraint* Constraint = static_cast<Chaos::FJointConstraint*>(HandleInfo->HandleData2.Constraint))
+								{
+									Constraint->SetLinearDriveForceMode(Chaos::EJointForceMode::Force);
+									Constraint->SetAngularDriveForceMode(Chaos::EJointForceMode::Force);
+								}
+							}
+						}
+#endif
+
+						if (Grip->GripCollisionType == EGripCollisionType::ManipulationGripWithWristTwist)
+						{
+							HandleInfo->AngConstraint.TwistDrive.Damping = AngularDamping;
+							HandleInfo->AngConstraint.TwistDrive.Stiffness = AngularStiffness;
+							HandleInfo->AngConstraint.TwistDrive.MaxForce = AngularMaxForce;
+
+							FPhysicsInterface::UpdateAngularDrive_AssumesLocked(HandleInfo->HandleData2, HandleInfo->AngConstraint);
 
 #if PHYSICS_INTERFACE_PHYSX
-				if (bUseForceDrive && HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.ConstraintData)
-				{
-					PxD6JointDrive driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eX);
-					driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
-					HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eX, driveVal);
+							if (bUseForceDrive && HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.ConstraintData)
+							{
+								PxD6JointDrive driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eTWIST);
+								driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
+								HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eTWIST, driveVal);
+							}
+#endif
+						}
 
-					driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eY);
-					driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
-					HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eY, driveVal);
+						FPhysicsInterface::SetDrivePosition(HandleInfo->HandleData2, FVector::ZeroVector);
+						FPhysicsInterface::SetDriveOrientation(HandleInfo->HandleData2, FQuat::Identity);
+					}
+					else
+					{
+						if (Grip->GripCollisionType == EGripCollisionType::InteractiveHybridCollisionWithPhysics)
+						{
+							// Do not effect damping, just increase stiffness so that it is stronger
+							// Default multiplier
+							Stiffness *= HYBRID_PHYSICS_GRIP_MULTIPLIER;
+							AngularStiffness *= HYBRID_PHYSICS_GRIP_MULTIPLIER;
 
-					driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eZ);
-					driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
-					HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eZ, driveVal);
-				}
+							AngularMaxForce = (float)FMath::Clamp<double>((double)AngularStiffness * (double)Grip->AdvancedGripSettings.PhysicsSettings.AngularMaxForceCoefficient, 0, (double)MAX_FLT);
+							MaxForce = (float)FMath::Clamp<double>((double)Stiffness * (double)Grip->AdvancedGripSettings.PhysicsSettings.LinearMaxForceCoefficient, 0, (double)MAX_FLT);
+						}
+
+						HandleInfo->LinConstraint.XDrive.Damping = Damping;
+						HandleInfo->LinConstraint.XDrive.Stiffness = Stiffness;
+						HandleInfo->LinConstraint.XDrive.MaxForce = MaxForce;
+						HandleInfo->LinConstraint.YDrive.Damping = Damping;
+						HandleInfo->LinConstraint.YDrive.Stiffness = Stiffness;
+						HandleInfo->LinConstraint.YDrive.MaxForce = MaxForce;
+						HandleInfo->LinConstraint.ZDrive.Damping = Damping;
+						HandleInfo->LinConstraint.ZDrive.Stiffness = Stiffness;
+						HandleInfo->LinConstraint.ZDrive.MaxForce = MaxForce;
+
+						FPhysicsInterface::UpdateLinearDrive_AssumesLocked(HandleInfo->HandleData2, HandleInfo->LinConstraint);
+
+#if PHYSICS_INTERFACE_PHYSX
+						if (bUseForceDrive && HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.ConstraintData)
+						{
+							PxD6JointDrive driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eX);
+							driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
+							HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eX, driveVal);
+
+							driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eY);
+							driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
+							HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eY, driveVal);
+
+							driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eZ);
+							driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
+							HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eZ, driveVal);
+						}
+#elif WITH_CHAOS
+						if (bUseForceDrive && HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.Constraint)
+						{
+							if (HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.Constraint->IsType(Chaos::EConstraintType::JointConstraintType))
+							{
+								if (Chaos::FJointConstraint* Constraint = static_cast<Chaos::FJointConstraint*>(HandleInfo->HandleData2.Constraint))
+								{
+									Constraint->SetLinearDriveForceMode(Chaos::EJointForceMode::Force);
+								}
+							}
+						}
 #endif
 
 
-				HandleInfo->AngConstraint.SlerpDrive.Damping = AngularDamping;
-				HandleInfo->AngConstraint.SlerpDrive.Stiffness = AngularStiffness;
-				HandleInfo->AngConstraint.SlerpDrive.MaxForce = AngularMaxForce;
-				FPhysicsInterface::UpdateAngularDrive_AssumesLocked(HandleInfo->HandleData2, HandleInfo->AngConstraint);
+						HandleInfo->AngConstraint.SlerpDrive.Damping = AngularDamping;
+						HandleInfo->AngConstraint.SlerpDrive.Stiffness = AngularStiffness;
+						HandleInfo->AngConstraint.SlerpDrive.MaxForce = AngularMaxForce;
+						FPhysicsInterface::UpdateAngularDrive_AssumesLocked(HandleInfo->HandleData2, HandleInfo->AngConstraint);
 
 #if PHYSICS_INTERFACE_PHYSX
-				if (bUseForceDrive && HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.ConstraintData)
-				{
-					PxD6JointDrive driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eTWIST);
-					driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
-					HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eTWIST, driveVal);
+						if (bUseForceDrive && HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.ConstraintData)
+						{
+							PxD6JointDrive driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eTWIST);
+							driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
+							HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eTWIST, driveVal);
 
-					driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eSWING);
-					driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
-					HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eSWING, driveVal);
+							driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eSWING);
+							driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
+							HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eSWING, driveVal);
 
-					driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eSLERP);
-					driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
-					HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eSLERP, driveVal);
-				}
+							driveVal = HandleInfo->HandleData2.ConstraintData->getDrive(PxD6Drive::Enum::eSLERP);
+							driveVal.flags &= ~PxD6JointDriveFlag::eACCELERATION;
+							HandleInfo->HandleData2.ConstraintData->setDrive(PxD6Drive::Enum::eSLERP, driveVal);
+						}
+#elif WITH_CHAOS
+						if (bUseForceDrive && HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.Constraint)
+						{
+							if (HandleInfo->HandleData2.IsValid() && HandleInfo->HandleData2.Constraint->IsType(Chaos::EConstraintType::JointConstraintType))
+							{
+								if (Chaos::FJointConstraint* Constraint = static_cast<Chaos::FJointConstraint*>(HandleInfo->HandleData2.Constraint))
+								{
+									Constraint->SetAngularDriveForceMode(Chaos::EJointForceMode::Force);
+								}
+							}
+						}
 #endif
-			}
+					}
+
+				});
 
 		}
 		return true;
@@ -5992,8 +6141,8 @@ void UGripMotionControllerComponent::UpdatePhysicsHandleTransform(const FBPActor
 #elif WITH_CHAOS
 		FPhysicsCommand::ExecuteWrite(ActorHandle, [&](const FPhysicsActorHandle & Actor)
 			{
-				Actor->SetX(newTrans.GetTranslation());
-				Actor->SetR(newTrans.GetRotation());
+				Actor->GetGameThreadAPI().SetX(newTrans.GetTranslation());
+				Actor->GetGameThreadAPI().SetR(newTrans.GetRotation());
 			});
 #endif
 

@@ -993,7 +993,7 @@ void EmptyLinkFunctionForGeneratedCodeVRSliderComponent() {}
 		{ "UIMin", "0.0" },
 	};
 #endif
-	const UE4CodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UVRSliderComponent_Statics::NewProp_EventThrowThreshold = { "EventThrowThreshold", nullptr, (EPropertyFlags)0x0010000000000015, UE4CodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UVRSliderComponent, EventThrowThreshold), METADATA_PARAMS(Z_Construct_UClass_UVRSliderComponent_Statics::NewProp_EventThrowThreshold_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UVRSliderComponent_Statics::NewProp_EventThrowThreshold_MetaData)) };
+	const UE4CodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UVRSliderComponent_Statics::NewProp_EventThrowThreshold = { "EventThrowThreshold", nullptr, (EPropertyFlags)0x0010000000000005, UE4CodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UVRSliderComponent, EventThrowThreshold), METADATA_PARAMS(Z_Construct_UClass_UVRSliderComponent_Statics::NewProp_EventThrowThreshold_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UVRSliderComponent_Statics::NewProp_EventThrowThreshold_MetaData)) };
 #if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UVRSliderComponent_Statics::NewProp_PrimarySlotRange_MetaData[] = {
 		{ "Category", "GripSettings" },
@@ -1317,7 +1317,7 @@ void EmptyLinkFunctionForGeneratedCodeVRSliderComponent() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UVRSliderComponent, 1399754080);
+	IMPLEMENT_CLASS(UVRSliderComponent, 303193762);
 	template<> VREXPANSIONPLUGIN_API UClass* StaticClass<UVRSliderComponent>()
 	{
 		return UVRSliderComponent::StaticClass();

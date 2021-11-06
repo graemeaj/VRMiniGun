@@ -6,7 +6,7 @@
 /NAME:"UE4Editor-VRExpansionEditor.dll"
 /IGNORE:4221
 /NODEFAULTLIB
-"C:\Users\firew\Documents\GitHub\VRMiniGun\Intermediate\Build\Win64\VRMiniGunEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h.obj"
-"C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\VRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\VRExpansionEditor\Module.VRExpansionEditor.cpp.obj"
-"C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\VRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\VRExpansionEditor\Default.rc2.res"
-/OUT:"C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\VRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\VRExpansionEditor\UE4Editor-VRExpansionEditor.lib"
+"C:\Users\firew\Downloads\VRExpPluginExample-master\Intermediate\Build\Win64\VRExpPluginExampleEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h.obj"
+"C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\VRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\VRExpansionEditor\Module.VRExpansionEditor.cpp.obj"
+"C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\VRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\VRExpansionEditor\Default.rc2.res"
+/OUT:"C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\VRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\VRExpansionEditor\UE4Editor-VRExpansionEditor.lib"

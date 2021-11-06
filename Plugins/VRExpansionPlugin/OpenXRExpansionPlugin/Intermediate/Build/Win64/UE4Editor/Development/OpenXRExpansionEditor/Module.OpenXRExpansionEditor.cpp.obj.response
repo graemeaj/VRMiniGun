@@ -32,7 +32,7 @@
 /wd4244
 /wd4838
 /I .
-/I C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Source\OpenXRExpansionEditor\Private
+/I C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Source\OpenXRExpansionEditor\Private
 /I ..\Intermediate\Build\Win64\UE4Editor\Inc\UnrealEd
 /I Editor
 /I Programs\UnrealLightmass\Public
@@ -237,11 +237,11 @@
 /I Editor\AnimGraph\Public
 /I ..\Intermediate\Build\Win64\UE4Editor\Inc\AnimGraphRuntime
 /I Runtime\AnimGraphRuntime\Public
-/I C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Inc\OpenXRExpansionPlugin
-/I C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Source
-/I C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Source\OpenXRExpansionPlugin\Public
-/I C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Inc\OpenXRExpansionEditor
-/I C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Source\OpenXRExpansionEditor\Public
+/I C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Inc\OpenXRExpansionPlugin
+/I C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Source
+/I C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Source\OpenXRExpansionPlugin\Public
+/I C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Inc\OpenXRExpansionEditor
+/I C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Source\OpenXRExpansionEditor\Public
 /I ThirdParty\PhysX3\PxShared\include
 /I ThirdParty\PhysX3\PxShared\include\cudamanager
 /I ThirdParty\PhysX3\PxShared\include\filebuf
@@ -271,12 +271,12 @@
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
-/FI"C:\Users\firew\Documents\GitHub\VRMiniGun\Intermediate\Build\Win64\VRMiniGunEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h"
-/Yu"C:\Users\firew\Documents\GitHub\VRMiniGun\Intermediate\Build\Win64\VRMiniGunEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h"
-/Fp"C:\Users\firew\Documents\GitHub\VRMiniGun\Intermediate\Build\Win64\VRMiniGunEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h.pch"
-"C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionEditor\Module.OpenXRExpansionEditor.cpp"
-/FI"C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionEditor\Definitions.OpenXRExpansionEditor.h"
-/Fo"C:\Users\firew\Documents\GitHub\VRMiniGun\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionEditor\Module.OpenXRExpansionEditor.cpp.obj"
+/FI"C:\Users\firew\Downloads\VRExpPluginExample-master\Intermediate\Build\Win64\VRExpPluginExampleEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h"
+/Yu"C:\Users\firew\Downloads\VRExpPluginExample-master\Intermediate\Build\Win64\VRExpPluginExampleEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h"
+/Fp"C:\Users\firew\Downloads\VRExpPluginExample-master\Intermediate\Build\Win64\VRExpPluginExampleEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h.pch"
+"C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionEditor\Module.OpenXRExpansionEditor.cpp"
+/FI"C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionEditor\Definitions.OpenXRExpansionEditor.h"
+/Fo"C:\Users\firew\Downloads\VRExpPluginExample-master\Plugins\VRExpansionPlugin\OpenXRExpansionPlugin\Intermediate\Build\Win64\UE4Editor\Development\OpenXRExpansionEditor\Module.OpenXRExpansionEditor.cpp.obj"
 /TP
 /GR-
 /W4

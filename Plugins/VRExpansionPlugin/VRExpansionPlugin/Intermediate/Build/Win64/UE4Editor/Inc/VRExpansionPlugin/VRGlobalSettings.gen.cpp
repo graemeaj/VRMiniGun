@@ -1052,6 +1052,22 @@ static struct FScriptStruct_VRExpansionPlugin_StaticRegisterNativesFBPVRControll
 		static const UE4CodeGen_Private::FMetaDataPairParam Class_MetaDataParams[];
 #endif
 #if WITH_METADATA
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_LinearDriveStiffnessScale_MetaData[];
+#endif
+		static const UE4CodeGen_Private::FFloatPropertyParams NewProp_LinearDriveStiffnessScale;
+#if WITH_METADATA
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_LinearDriveDampingScale_MetaData[];
+#endif
+		static const UE4CodeGen_Private::FFloatPropertyParams NewProp_LinearDriveDampingScale;
+#if WITH_METADATA
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_AngularDriveStiffnessScale_MetaData[];
+#endif
+		static const UE4CodeGen_Private::FFloatPropertyParams NewProp_AngularDriveStiffnessScale;
+#if WITH_METADATA
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_AngularDriveDampingScale_MetaData[];
+#endif
+		static const UE4CodeGen_Private::FFloatPropertyParams NewProp_AngularDriveDampingScale;
+#if WITH_METADATA
 		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_bUseGlobalLerpToHand_MetaData[];
 #endif
 		static void NewProp_bUseGlobalLerpToHand_SetBit(void* Obj);
@@ -1149,6 +1165,42 @@ static struct FScriptStruct_VRExpansionPlugin_StaticRegisterNativesFBPVRControll
 		{ "ObjectInitializerConstructorDeclared", "" },
 	};
 #endif
+#if WITH_METADATA
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_LinearDriveStiffnessScale_MetaData[] = {
+		{ "Category", "ChaosPhysics" },
+		{ "Comment", "// A scaler to apply to constraint drives when chaos is active\n" },
+		{ "ModuleRelativePath", "Public/VRGlobalSettings.h" },
+		{ "ToolTip", "A scaler to apply to constraint drives when chaos is active" },
+	};
+#endif
+	const UE4CodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_LinearDriveStiffnessScale = { "LinearDriveStiffnessScale", nullptr, (EPropertyFlags)0x0010000000004005, UE4CodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UVRGlobalSettings, LinearDriveStiffnessScale), METADATA_PARAMS(Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_LinearDriveStiffnessScale_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_LinearDriveStiffnessScale_MetaData)) };
+#if WITH_METADATA
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_LinearDriveDampingScale_MetaData[] = {
+		{ "Category", "ChaosPhysics" },
+		{ "Comment", "// A scaler to apply to constraint drives when chaos is active\n" },
+		{ "ModuleRelativePath", "Public/VRGlobalSettings.h" },
+		{ "ToolTip", "A scaler to apply to constraint drives when chaos is active" },
+	};
+#endif
+	const UE4CodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_LinearDriveDampingScale = { "LinearDriveDampingScale", nullptr, (EPropertyFlags)0x0010000000004005, UE4CodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UVRGlobalSettings, LinearDriveDampingScale), METADATA_PARAMS(Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_LinearDriveDampingScale_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_LinearDriveDampingScale_MetaData)) };
+#if WITH_METADATA
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_AngularDriveStiffnessScale_MetaData[] = {
+		{ "Category", "ChaosPhysics" },
+		{ "Comment", "// A scaler to apply to constraint drives when chaos is active\n" },
+		{ "ModuleRelativePath", "Public/VRGlobalSettings.h" },
+		{ "ToolTip", "A scaler to apply to constraint drives when chaos is active" },
+	};
+#endif
+	const UE4CodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_AngularDriveStiffnessScale = { "AngularDriveStiffnessScale", nullptr, (EPropertyFlags)0x0010000000004005, UE4CodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UVRGlobalSettings, AngularDriveStiffnessScale), METADATA_PARAMS(Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_AngularDriveStiffnessScale_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_AngularDriveStiffnessScale_MetaData)) };
+#if WITH_METADATA
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_AngularDriveDampingScale_MetaData[] = {
+		{ "Category", "ChaosPhysics" },
+		{ "Comment", "// A scaler to apply to constraint drives when chaos is active\n" },
+		{ "ModuleRelativePath", "Public/VRGlobalSettings.h" },
+		{ "ToolTip", "A scaler to apply to constraint drives when chaos is active" },
+	};
+#endif
+	const UE4CodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_AngularDriveDampingScale = { "AngularDriveDampingScale", nullptr, (EPropertyFlags)0x0010000000004005, UE4CodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UVRGlobalSettings, AngularDriveDampingScale), METADATA_PARAMS(Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_AngularDriveDampingScale_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_AngularDriveDampingScale_MetaData)) };
 #if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_bUseGlobalLerpToHand_MetaData[] = {
 		{ "Category", "GlobalLerpToHand" },
@@ -1293,6 +1345,10 @@ static struct FScriptStruct_VRExpansionPlugin_StaticRegisterNativesFBPVRControll
 #endif
 	const UE4CodeGen_Private::FArrayPropertyParams Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_ControllerProfiles = { "ControllerProfiles", nullptr, (EPropertyFlags)0x0010000000004001, UE4CodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UVRGlobalSettings, ControllerProfiles), EArrayPropertyFlags::None, METADATA_PARAMS(Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_ControllerProfiles_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_ControllerProfiles_MetaData)) };
 	const UE4CodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UVRGlobalSettings_Statics::PropPointers[] = {
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_LinearDriveStiffnessScale,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_LinearDriveDampingScale,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_AngularDriveStiffnessScale,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_AngularDriveDampingScale,
 		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_bUseGlobalLerpToHand,
 		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_MinDistanceForLerp,
 		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UVRGlobalSettings_Statics::NewProp_LerpDuration,
@@ -1339,7 +1395,7 @@ static struct FScriptStruct_VRExpansionPlugin_StaticRegisterNativesFBPVRControll
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UVRGlobalSettings, 1100636232);
+	IMPLEMENT_CLASS(UVRGlobalSettings, 2951992449);
 	template<> VREXPANSIONPLUGIN_API UClass* StaticClass<UVRGlobalSettings>()
 	{
 		return UVRGlobalSettings::StaticClass();

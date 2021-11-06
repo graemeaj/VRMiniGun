@@ -13,21 +13,21 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define OPENXREXPANSIONPLUGIN_OpenXRExpansionTypes_generated_h
 
-#define VRMiniGun_Plugins_VRExpansionPlugin_OpenXRExpansionPlugin_Source_OpenXRExpansionPlugin_Public_OpenXRExpansionTypes_h_161_GENERATED_BODY \
+#define VRExpPluginExample_master_Plugins_VRExpansionPlugin_OpenXRExpansionPlugin_Source_OpenXRExpansionPlugin_Public_OpenXRExpansionTypes_h_171_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FBPOpenXRSkeletalMappingData_Statics; \
 	static class UScriptStruct* StaticStruct();
 
 
 template<> OPENXREXPANSIONPLUGIN_API UScriptStruct* StaticStruct<struct FBPOpenXRSkeletalMappingData>();
 
-#define VRMiniGun_Plugins_VRExpansionPlugin_OpenXRExpansionPlugin_Source_OpenXRExpansionPlugin_Public_OpenXRExpansionTypes_h_121_GENERATED_BODY \
+#define VRExpPluginExample_master_Plugins_VRExpansionPlugin_OpenXRExpansionPlugin_Source_OpenXRExpansionPlugin_Public_OpenXRExpansionTypes_h_131_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FBPOpenXRSkeletalPair_Statics; \
 	static class UScriptStruct* StaticStruct();
 
 
 template<> OPENXREXPANSIONPLUGIN_API UScriptStruct* StaticStruct<struct FBPOpenXRSkeletalPair>();
 
-#define VRMiniGun_Plugins_VRExpansionPlugin_OpenXRExpansionPlugin_Source_OpenXRExpansionPlugin_Public_OpenXRExpansionTypes_h_66_GENERATED_BODY \
+#define VRExpPluginExample_master_Plugins_VRExpansionPlugin_OpenXRExpansionPlugin_Source_OpenXRExpansionPlugin_Public_OpenXRExpansionTypes_h_76_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FBPOpenXRActionSkeletalData_Statics; \
 	static class UScriptStruct* StaticStruct();
 
@@ -35,7 +35,7 @@ template<> OPENXREXPANSIONPLUGIN_API UScriptStruct* StaticStruct<struct FBPOpenX
 template<> OPENXREXPANSIONPLUGIN_API UScriptStruct* StaticStruct<struct FBPOpenXRActionSkeletalData>();
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID VRMiniGun_Plugins_VRExpansionPlugin_OpenXRExpansionPlugin_Source_OpenXRExpansionPlugin_Public_OpenXRExpansionTypes_h
+#define CURRENT_FILE_ID VRExpPluginExample_master_Plugins_VRExpansionPlugin_OpenXRExpansionPlugin_Source_OpenXRExpansionPlugin_Public_OpenXRExpansionTypes_h
 
 
 #define FOREACH_ENUM_EVROPENXRSKELETONTYPE(op) \
@@ -86,5 +86,12 @@ template<> OPENXREXPANSIONPLUGIN_API UEnum* StaticEnum<EXRHandJointType>();
 
 enum class EVRSkeletalHandIndex : uint8;
 template<> OPENXREXPANSIONPLUGIN_API UEnum* StaticEnum<EVRSkeletalHandIndex>();
+
+#define FOREACH_ENUM_EBPXRRESULTSWITCH(op) \
+	op(EBPXRResultSwitch::OnSucceeded) \
+	op(EBPXRResultSwitch::OnFailed) 
+
+enum class EBPXRResultSwitch : uint8;
+template<> OPENXREXPANSIONPLUGIN_API UEnum* StaticEnum<EBPXRResultSwitch>();
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

@@ -77,7 +77,7 @@ void EmptyLinkFunctionForGeneratedCodeVRExpansionPlugin_init() {}
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0xE66B77E1,
+				0x79F370B1,
 				0x34646897,
 				METADATA_PARAMS(nullptr, 0)
 			};
